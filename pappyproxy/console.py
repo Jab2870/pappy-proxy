@@ -28,7 +28,7 @@ def print_errors(func):
 def interface_loop(client):
     cons = Cmd(client=client)
     load_interface(cons)
-    sys.argv = []
+    sys.argv = sys.argv[:1]
     cons.cmdloop()
     
 def load_interface(cons):
