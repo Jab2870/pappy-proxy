@@ -74,16 +74,21 @@ def main():
             msg_addr = args.dbgattach[0]
     else:
         msg_addr = None
-        try:
-            # Try to get the binary from GOPATH
-            gopath = os.environ["GOPATH"]
-            binloc = os.path.join(gopath, "bin", "puppy")
-        except:
-            # Try to get the binary from ~/.pappy/puppy
-            binloc = os.path.join(data_dir, "puppy")
-            if not os.path.exists(binloc):
-                print("Could not find puppy binary in GOPATH or ~/.pappy. Please ensure that it has been compiled, or pass in the binary location from the command line")
-                exit(1)
+
+        binpaths = [
+                # Try to get the binary from GOPATH
+                os.path.join(os.getenv('GOPATH', '/usr/lib/go'), 'bin'),
+                # Try to get the binary from ~/.pappy/puppy
+                data_dir,
+        ]
+
+        for binpath in binpaths:
+            binloc = os.path.join(binpath, 'puppy')
+            if os.path.exists(binloc):
+                break
+        else:
+            print('Could not find puppy binary in GOPATH or ~/.pappy. Please ensure that it has been compiled, or pass in the binary location from the command line')
+            exit(1)
     config = ProxyConfig()
     if not args.lite:
         config.load("./config.json")
