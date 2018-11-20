@@ -1558,7 +1558,7 @@ def set_up_windows():
     b1 = vim.current.buffer
     vim.command("let s:b1=bufnr('$')")
 
-    print msg_addr
+    print(msg_addr)
     comm_type, comm_addr = msg_addr.split(":", 1)
     set_conn(comm_type, comm_addr)
     with ProxyConnection(kind=comm_type, addr=comm_addr) as conn:
