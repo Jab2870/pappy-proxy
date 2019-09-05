@@ -218,12 +218,14 @@ class URL:
         
     def set_param(self, key, val):
         params = self.parameters()
-        params[key] = [val]
+        params[key] = val
         self.query = urlencode(params)
         
     def add_param(self, key, val):
         params = self.parameters()
         if key in params:
+            if not isinstance( params[key], list ):
+                params[key] = [params[key]]
             params[key].append(val)
         else:
             params[key] = [val]
@@ -356,12 +358,14 @@ class HTTPRequest:
                 
     def set_param(self, key, val):
         params = self.parameters()
-        params[key] = [val]
+        params[key] = val
         self.body = urlencode(params)
         
     def add_param(self, key, val):
         params = self.parameters()
         if key in params:
+            if not isinstance( params[key], list ):
+                params[key] = [params[key]]
             params[key].append(val)
         else:
             params[key] = [val]
