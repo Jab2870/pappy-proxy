@@ -11,9 +11,9 @@ import vim
 import threading
 
 from collections import namedtuple
-from urlparse import urlparse, ParseResult, parse_qs
-from urllib import urlencode
-import Cookie as hcookies
+from urllib.parse import urlparse, ParseResult, parse_qs
+from urllib.parse import urlencode
+import http.cookies as hcookies
 
 ## STRIPPED DOWN COPY OF HTTP OBJECTS / COMMS
 
@@ -1449,6 +1449,7 @@ def parse_rsp_sline(sline):
     return ResponseStatusLine(int(pmajor), int(pminor), int(status_code), reason.decode())
 
 def _parse_message(bs, sline_parser):
+    bs = bs.encode()
     header_env, body = re.split(b"\r?\n\r?\n", bs, 1)
     status_line, header_bytes = re.split(b"\r?\n", header_env, 1)
     h = Headers()
@@ -1502,7 +1503,7 @@ def run_command(command):
 def set_buffer_content(buf, text):
     buf[:] = None
     first = True
-    for l in text.split('\n'):
+    for l in text.split(b'\n'):
         if first:
             buf[0] = l
             first = False
@@ -1558,7 +1559,7 @@ def set_up_windows():
     b1 = vim.current.buffer
     vim.command("let s:b1=bufnr('$')")
 
-    print msg_addr
+    print(msg_addr)
     comm_type, comm_addr = msg_addr.split(":", 1)
     set_conn(comm_type, comm_addr)
     with ProxyConnection(kind=comm_type, addr=comm_addr) as conn:
