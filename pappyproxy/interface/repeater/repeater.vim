@@ -1,7 +1,7 @@
-if !has('python')
-    echo "Vim must support python in order to use the repeater"
-    finish
-endif
+ if !has('python3')
+     echo "Vim must support python in order to use the repeater"
+     finish
+ endif
 
 " Settings to make life easier
 set hidden
@@ -9,7 +9,7 @@ set hidden
 let s:pyscript = resolve(expand('<sfile>:p:h') . '/repeater.py')
 
 function! RepeaterAction(...)
-    execute 'pyfile ' . s:pyscript
+    execute 'py3file ' . s:pyscript
 endfunc
 
 command! -nargs=* RepeaterSetup call RepeaterAction('setup', <f-args>)
